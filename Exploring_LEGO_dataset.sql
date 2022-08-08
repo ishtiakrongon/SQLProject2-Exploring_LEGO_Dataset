@@ -37,15 +37,39 @@ ORDER BY total_num_parts DESC;
 
 --------------------------------------------------------------------
 
--- How many sets were created in each century in the dataset?
+-- 3. How many sets were created in each century in the dataset?
 
-SELECT century, count(set_num) as total_set_num
+SELECT century, COUNT(set_num) as total_set_num
 FROM analytics_main
 WHERE parent_theme_name IS NOT NULL
 GROUP BY century;
 
 
 ---------------------------------------------------------------------
+
+-- 4. --- What percentage of sets ever released in the 21st century were trains themed? 
+
+WITH cte AS 
+(
+	SELECT century, theme_name, COUNT(set_num) total_set_num
+	FROM analytics_main
+	WHERE century = '21st Century'
+	GROUP BY century, theme_name
+)
+SELECT SUM(total_set_num), SUM(percentage)
+FROM(
+	SELECT Century, theme_name, total_set_num, SUM(total_set_num) OVER() AS total,  cast(1.00 * total_set_num / sum(total_set_num) OVER() AS decimal(5,4))*100 Percentage
+	FROM cte	
+	--order by 3 desc
+	)m
+WHERE theme_name LIKE '%Star wars%';
+
+
+
+-----------------------------------------------------------------------
+
+
+
 
 
 
