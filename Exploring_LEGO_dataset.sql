@@ -33,3 +33,20 @@ FROM analytics_main
 WHERE parent_theme_name IS NOT NULL
 GROUP BY year
 ORDER BY total_num_parts DESC;
+
+
+--------------------------------------------------------------------
+
+-- How many sets were created in each century in the dataset?
+
+SELECT century, count(set_num) as total_set_num
+FROM analytics_main
+WHERE parent_theme_name IS NOT NULL
+GROUP BY century;
+
+
+---------------------------------------------------------------------
+
+
+
+
